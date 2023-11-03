@@ -1,0 +1,143 @@
+\documentclass[14]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{geometry}
+\geometry{
+a4paper,
+total={170mm,257mm},
+left=20mm,
+top=20mm,
+bottom=20mm
+}
+\usepackage{titling}
+\graphicspath{{./images/}}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+\title{COMP2521: Data Structure and Algorithms}
+\author{Haeohreum Kim (z5480978)}
+\date{2023 T3}
+
+\begin{document}
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+\newpage
+\section{Sorting algorithms}
+Sorting algorithms are a fundamental problem in computer science. At the core, having a sorted list of some objects lets us
+do very useful things to it - specifically within COMP2521, we see binary search being used often to achieve $O(\log n)$ performance.
+\subsection{Comparison sorts}
+Quadratic algorithms are often very easy to implement - but also come at a time cost. Quadratic algorithms generally have 
+nested loops, which are easy to understand, as it compares each node with every single other node n times. \\ 
+$\mathbf{O(n^2) \text{ \textbf{algorithms}}}$
+\begin{enumerate}
+	\item Selection Sort \\ 
+	Selection sort works by creating a sorted component and an un-sorted component. The sort works by finding the smallest
+	element left in the unsorted component, and then inserting it in the appropiate place in the sorted component. \\ 
+	Worst case time complexity: $O(n^2)$ \\ 
+	Best case time complexity: $O(n^2)$ \\ 
+	Stable: No \\ 
+	\item Insertion Sort \\ 
+	Insertion sort is similar to selection sort, but instead, just chooses the next element to insert into the 
+	sorted component. It begins (usually) with the left most element being considered 'sorted'. \\ 
+	Worst case time complexity: $O(n^2)$ \\ 
+	Best case time complexity: $O(n)$ \\
+	Stable: Yes \\ 
+	\item Bubble Sort \\
+	Bubble sort works in a cyclical manner, where it iterates through the array, compares adjacent elements,
+	and swaps them if they are out of order. \\ 
+	Worst case time complexity: $O(n^2)$ \\ 
+	Best case time complexity: $O(n)$ \\
+	Stables: Yes \\ 
+\end{enumerate}
+$\mathbf{O(nlogn) \text{\textbf{ algorithms}}}$ \\ 
+$O(n\log n)$ sorts are more difficult to implement, but offer superior, noticeable performance in large datasets.
+\begin{enumerate}
+	\item Quicksort \\ 
+	Quicksort is a divide and conquer algorithm, which works by choosing a \emph{pivot}, and then partitoning
+	the elements into sets that are smaller than the element, and bigger than the element. Notably, quicksort 
+	can have a worst-case time complexity of $O(n^2)$, when an array is sorted. There are multiple different 'pivot' choices
+	that a programmer can make, begin:
+	\begin{enumerate}
+		\item Naive \\ 
+		Naive quick sort chooses the first element (or last, or some fixed element) as the pivot. 
+		This is the easiest to implement, but also, the worst performing. 
+		\item Median-of-three \\ 
+		Median-of-three quick sort chooses the median of the first, middle and last element as the pivot.
+		This minimises the risk of choosing a worst case pivot, but doesn't entirely remove it. The worst case
+		is still $O(n^2)$, but the average time complexity will be better empirically.
+		\item Randomised \\ 
+		Randomised quick sort chooses a random pivot. This has the best empirical performance. It is highly
+		unlikely that the worst choice may be chosen.
+	\end{enumerate}
+	Worst case time complexity: $O(n^2)$ \\ 
+	Best case time complexity: $O(nlogn)$ \\ 
+	Stable: No 
+\item Merge Sort \\
+	Merge Sort is also a divide and conquer algorithm, which works by splitting the array into two halves, and then
+	recursively sorting the two halves, and then merging them together. Merge sort is a stable algorithm, and is
+	often used in practice. \\ 
+	Worst case time complexity: $O(nlogn)$ \\ 
+	Best case time complexity: $O(nlogn)$ \\ 
+	Stable: Yes  
+\end{enumerate}
+\subsection{Non-comparison sorts}
+Non-comparison sorts don't compare elements directly - but rather use some sort of external sorting method. \\
+\textbf{Radix sort} \\ 
+Radix sort is a non-comparison sort, which works by sorting the elements by their individual digits. 
+It works by sorting the elements into "buckets" by their least significant digit, and then moving onto the next digit.
+This is repeated until the most significant digit is reached. (From the last digit to the first digit).
+An example of radix sort would be:  
+\section{Binary search tree}
+A binary search tree is a tree with nodes with at most two children, and has the property that the left child is less than the parent.
+With this, a search can be performed in $O(\log n)$ time.
+\subsection{Traversal}
+There are three main types of traversal: 
+\begin{enumerate}
+	\item Pre-order traversal \\
+	Pre-order traversal can be seen as "stay left" algorithm. It works by visting the current node, and then recursively 
+	going down the tree, marking the nodes. The pre-order traversal can be represented as:
+	\begin{verbatim}
+print(node)
+preorder(node.left)
+preorder(node.right)
+	\end{verbatim}
+	\item In-order traversal \\
+	In-order traversal can be seen as the "left parent right" algorithm - starting from the bottom left, and sweeping upwards,
+	making sure each node is visited. In a BST, it would go bottom left, it's parent, it's right sibling, 
+	the parent's parent, and then the parent's sibling subtree.
+	\begin{verbatim}
+inorder(node.left)
+print(node)
+inorder(node.right)
+	\end{verbatim}
+	\item Post-order traversal \\
+	Post-order traversal can be seen as the "left right parent" algorithm. It trys to stay as low as possible within the tree,
+	but then sweeps up similar to an in-order traversal. In a BST, it would go bottom left, it's sibling, THEN it's parent,
+	then the parent's sibling subtree, and then the parent's parent.
+	\begin{verbatim}
+postorder(node.left)
+print(node)
+postorder(node.right)
+	\end{verbatim}
+\end{enumerate}
+\pagebreak
+\subsection{Balanced BST's and AVL Trees}
+\subsubsection{Calculating balance}
+The balance of a tree is calculated by the height of the left subtree, minus the height of the right subtree.
+This \emph{balance factor} should be calculated at each node, so that the tree gets balanced from the bottom up.
+\subsubsection{Rotations}
+Rotations keep things balanced. If a tree is unbalanced $<-1$, then it requires a right rotation.
+If a tree is unbalanced $>1$, then it requires a left rotation.
+\begin{itemize}
+	\item In different scenarios, you will need a left-right, right-right, right-left, and left-left rotation.
+	\item Right-right and left-left rotations deal with degenerate cases, where the tree is unbalanced in one direction.
+	\item Right-left and left-right rotations deal with the tree being unbalanced in two directions, in a zig-zag pattern.
+\end{itemize}
+\begin{center}
+\includegraphics[scale=0.75]{images/Screenshot 2023-11-04 at 12.03.59 am.png}
+\end{center}
+\end{document}
