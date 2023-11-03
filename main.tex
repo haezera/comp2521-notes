@@ -91,7 +91,7 @@ Radix sort is a non-comparison sort, which works by sorting the elements by thei
 It works by sorting the elements into "buckets" by their least significant digit, and then moving onto the next digit.
 This is repeated until the most significant digit is reached. (From the last digit to the first digit).
 An example of radix sort would be:  
-\section{Binary search tree}
+\section{Binary search trees}
 A binary search tree is a tree with nodes with at most two children, and has the property that the left child is less than the parent.
 With this, a search can be performed in $O(\log n)$ time.
 \subsection{Traversal}
@@ -127,8 +127,20 @@ postorder(node.right)
 \pagebreak
 \subsection{Balanced BST's and AVL Trees}
 \subsubsection{Calculating balance}
-The balance of a tree is calculated by the height of the left subtree, minus the height of the right subtree.
+The size balance of a tree, is calculated by the formula:
+\begin{center}
+    $size(left) - size(right)$
+\end{center}
+The height balance of a tree is calculated by the height of the left subtree, minus the height of the right subtree.
+It is calculated by:
+\begin{center}
+    $height(left) - height(right)$
+\end{center}
 This \emph{balance factor} should be calculated at each node, so that the tree gets balanced from the bottom up.
+\begin{center}
+\includegraphics[scale=0.25]{images/balance_1.png}
+\includegraphics[scale=0.25]{images/balance_2.png}
+\end{center}
 \subsubsection{Rotations}
 Rotations keep things balanced. If a tree is unbalanced $<-1$, then it requires a right rotation.
 If a tree is unbalanced $>1$, then it requires a left rotation.
@@ -138,6 +150,58 @@ If a tree is unbalanced $>1$, then it requires a left rotation.
 	\item Right-left and left-right rotations deal with the tree being unbalanced in two directions, in a zig-zag pattern.
 \end{itemize}
 \begin{center}
-\includegraphics[scale=0.75]{images/Screenshot 2023-11-04 at 12.03.59 am.png}
+\includegraphics[scale=0.75]{images/rotations.png}
 \end{center}
+\pagebreak
+\subsubsection{AVL Trees}
+AVL trees are constructed by inserting nodes into a BST, and then rotating the tree if it becomes unbalanced.
+This improves our worst time complexity to $O(\log n)$, as the tree is always balanced. \\ 
+The steps are: 
+\begin{enumerate}
+	\item Insert the node into the tree, as you would normally.
+	\item Calculate the balance factor of the node.
+	\item If the balance factor is $<-1$ or $>1$, then rotate the tree.
+		\begin{enumerate}
+			\item If the balance factor is $<-1$ and the value of the inserting node is less 
+			than the rotating node's left child, then perform a right-right rotation.
+			Else, perform a right-left rotation.
+			\item If the balance factor is $>1$ and the value of the inserting node is greater
+			than the rotating node's right child, then perform a left-left rotation.
+			Else, perform a left-right rotation.
+
+		\end{enumerate}
+	\item Repeat until the tree is balanced.
+\end{enumerate}
+
+\subsubsection{Global Rebalancing}
+Global rebalancing works by partitioning the tree into subtrees, and the rebuilding and rebalancing the entire tree
+as a whole. This is opposed to what an AVL tree does, which is \emph{local rebalancing}, which only rebalances the tree
+at the node it is inserted at. Global rebalancing ensures a perfect balance.
+\begin{verbatim}
+rebalance(tree)
+    t = partition(t, size(t) / 2)
+    t.left = rebalance(t.left)
+    t.right = rebalance(t.right)
+\end{verbatim}
+\subsubsection{Root Insertion}
+Root insertion is a technique used to insert a new node into the BST, and then make it the root node. \\
+Root insertion works as such:
+\begin{verbatim}
+insert(tree, value)
+    if tree empty 
+        value <- tree
+    else if value < tree->item
+        insert(tree.left, value)
+        tree = rotateRight(tree)
+    else if value > tree->item
+        insert(tree.right, value)
+        tree = rotateLeft(tree)
+
+    return tree
+\end{verbatim}
+\subsubsection{Randomised Insertion}
+Due to the way AVL trees work, a sorted or partially sorted array of data will result in a worst case performance.
+This is due to the amount of rotating that is required. Random insertion randomly chooses an element from the to-insert 
+set, and then inserts this into the AVL tree, minimising the risk of having to rebalance a degenerate tree.
+
 \end{document}

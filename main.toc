@@ -1,4 +1,0 @@
-\babel@toc {english}{}\relax 
-\contentsline {section}{\numberline {1}Examples}{3}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Pictures}{3}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Citation}{3}{subsection.1.2}%
